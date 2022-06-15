@@ -84,7 +84,10 @@ class App extends Component {
 
     //method to unstake tokens
     unstakeTokens = () => {
-        
+        this.setState({loading: true});
+        this.state.decentralBank.methods.unstakeTokens().send({from: this.state.account}).on('transactionHash', (hash) => {
+            this.setState({loading: false});
+        })
     }
     
     constructor(props) {
@@ -103,7 +106,7 @@ class App extends Component {
 
     render() {
         let content;
-        {this.state.loading ? content = <p id='loader' className='text-center' style={{margin: '30px'}}>LOADING PLEASE...</p> : content = <Main tetherBalance={this.state.tetherBalance} rwdBalance={this.state.rwdBalance} stakingBalance={this.state.stakingBalance} stakeTokens={this.stakeTokens} />}
+        {this.state.loading ? content = <p id='loader' className='text-center' style={{margin: '30px'}}>LOADING PLEASE...</p> : content = <Main tetherBalance={this.state.tetherBalance} rwdBalance={this.state.rwdBalance} stakingBalance={this.state.stakingBalance} stakeTokens={this.stakeTokens} unstakeTokens={this.unstakeTokens} />}
 
         return (
             <div>
