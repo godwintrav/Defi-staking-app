@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import tether from '../tether.png';
+import Airdrop from './Airdrop';
 
 class Main extends Component {
     render() {
@@ -9,13 +10,13 @@ class Main extends Component {
                 <div id='content' className='mt-3'>
                     <table className='table text-muted text-center'>
                         <thead>
-                            <tr style={{color: 'black'}}>
+                            <tr style={{color: 'white'}}>
                                 <th scope='col'>Staking Balance</th>
                                 <th scope='col'>Reward Balance</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style={{color: 'black'}}>
+                            <tr style={{color: 'white'}}>
                                 <td>{window.web3.utils.fromWei(this.props.stakingBalance, 'Ether')} USDT</td>
                                 <td>{window.web3.utils.fromWei(this.props.rwdBalance, 'Ether')} RWD</td>
                             </tr>
@@ -25,8 +26,9 @@ class Main extends Component {
                         <form className='mb-3' onSubmit={(event) => {
                             event.preventDefault();
                             let amount;
-                            amount = this.input.value.toString();
+                            amount = this.egg.value.toString();
                             amount = window.web3.utils.toWei(amount, 'Ether');
+                            // toWei converts the value from ether to wei
                             this.props.stakeTokens(amount);
                         }}>
                             <div style={{borderSpacing: '0 1em'}}>
@@ -36,7 +38,7 @@ class Main extends Component {
                                     {/* fromWei converts the value from wei value to ether value */}
                                 </span>
                                 <div className='input-group mb-4'>
-                                    <input type="text" placeholder='0' required />
+                                    <input ref={(input) => {this.egg = input}} type="text" placeholder='0' required />
                                     <div className='input-group-open'>
                                         <div className='input-group-text'>
                                             <img src={tether} alt="tether" height='32' />
@@ -51,9 +53,12 @@ class Main extends Component {
                                 
                             </div>
                         </form>
-                        <button className='btn btn-primary btn-lg btn-block'>WITHDRAW</button>
+                        <button onClick={(event) => {
+                            event.preventDefault();
+                            this.props.unstakeTokens();
+                        }} className='btn btn-primary btn-lg btn-block'>WITHDRAW</button>
                         <div className='card-body text-center' style={{color: 'blue'}}>
-                            AIRDROP
+                            AIRDROP <Airdrop stakingBalance={this.props.stakingBalance} />
                         </div>
                     </div>
                 </div>
